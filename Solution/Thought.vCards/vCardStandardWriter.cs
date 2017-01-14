@@ -1168,7 +1168,13 @@ namespace Thought.vCards
                     property.Subproperties.Add(TYPE, "CELL");
 
                 if (phone.IsFax)
+                {
+                    if (!phone.IsHome && !phone.IsWork)
+                    {
+                        property.Subproperties.Add(TYPE, "OTHER");
+                    }
                     property.Subproperties.Add(TYPE, "FAX");
+                }
 
                 if (phone.IsHome)
                     property.Subproperties.Add(TYPE, "HOME");
@@ -1192,7 +1198,13 @@ namespace Thought.vCards
                     property.Subproperties.Add(TYPE, "VIDEO");
 
                 if (phone.IsVoice)
+                {
+                    if (!phone.IsHome && !phone.IsWork)
+                    {
+                        property.Subproperties.Add(TYPE, "OTHER");
+                    }
                     property.Subproperties.Add(TYPE, "VOICE");
+                }
 
                 if (phone.IsWork)
                     property.Subproperties.Add(TYPE, "WORK");
