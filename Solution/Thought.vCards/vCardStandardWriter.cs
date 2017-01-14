@@ -1292,6 +1292,9 @@ namespace Thought.vCards
 
                     if (webSite.IsWorkSite)
                         property.Subproperties.Add(TYPE, "WORK");
+                    // Add Subproperty for HOME aswell
+                    if (webSite.IsPersonalSite)
+                        property.Subproperties.Add(TYPE, "HOME");
 
                     properties.Add(property);
                 }
