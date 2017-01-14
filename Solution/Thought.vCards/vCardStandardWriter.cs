@@ -1635,14 +1635,14 @@ namespace Thought.vCards
 
                     // A byte array should be encoded in BASE64 format.
 
-                    builder.Append(";ENCODING=BASE64:");
+                    builder.Append(";ENCODING=b:");
                     builder.Append(EncodeBase64((byte[])property.Value));
 
                 }
                 else if (property.Name.Equals("PHOTO", StringComparison.OrdinalIgnoreCase) && valueType == typeof(string))
                 {
                     //already base64 encoded
-                    builder.Append(";ENCODING=BASE64:");
+                    builder.Append(";ENCODING=b:");
                     builder.Append(property.Value);
                 }
                 else if (valueType == typeof(vCardValueCollection))
