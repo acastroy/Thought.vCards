@@ -614,66 +614,76 @@ namespace Thought.vCards
 
         }
 
-        #endregion
+    #endregion
 
 
-        private void BuildProperties_IMPP(vCardPropertyCollection properties, vCard card)
+    private void BuildProperties_IMPP(vCardPropertyCollection properties, vCard card)
+    {
+
+      // adding support for IMPP (IM handles) in the vCard
+      //iOS outputs this => IMPP;X-SERVICE-TYPE=Skype;type=HOME;type=pref:skype:skypeusernameee
+
+
+
+      foreach (var im in card.IMs)
+      {
+
+        vCardProperty property = new vCardProperty();
+        property.Name = "IMPP";
+
+        string prefix = IMTypeUtils.GetIMTypePropertyPrefix(im.ServiceType);
+        string suffix = IMTypeUtils.GetIMTypePropertySuffix(im.ServiceType);
+
+        if (!string.IsNullOrEmpty(prefix) && !string.IsNullOrEmpty(suffix))
         {
-
-            // adding support for IMPP (IM handles) in the vCard
-            //iOS outputs this => IMPP;X-SERVICE-TYPE=Skype;type=HOME;type=pref:skype:skypeusernameee
-
-
-
-            foreach (var im in card.IMs)
-            {
-
-                vCardProperty property = new vCardProperty();
-                property.Name = "IMPP";
-
-
-                string subProperty = IMTypeUtils.GetIMTypePropertyFull(im.ServiceType);
-                string prefix = IMTypeUtils.GetIMTypePropertyPrefix(im.ServiceType);
-                string suffix = IMTypeUtils.GetIMTypePropertySuffix(im.ServiceType);
-
-                property.Subproperties.Add("X-SERVICE-TYPE", prefix);
-                property.Value = string.Concat(suffix, ":", im.Handle);
-
-
-                if (im.IsPreferred)
-                {
-                    property.Subproperties.Add(TYPE, "PREF");
-                }
-
-                switch (im.ItemType)
-                {
-
-                    case ItemType.HOME:
-                        property.Subproperties.Add(TYPE, ItemType.HOME.ToString());
-                        break;
-                    case ItemType.WORK:
-                        property.Subproperties.Add(TYPE, ItemType.WORK.ToString());
-                        break;
-
-                    case ItemType.UNSPECIFIED:
-                    default:
-                        property.Subproperties.Add(TYPE, "OTHER");
-                        break;
-                }
-
-                properties.Add(property);
-
-            }
-
+          property.Subproperties.Add("X-SERVICE-TYPE", prefix);
+          property.Value = string.Concat(suffix, ":", im.Handle);
+        }
+        else
+        {
+          property.Value = im.Handle;
         }
 
 
-        #region [ BuildProperties_KEY ]
+        if (im.IsPreferred)
+        {
+          property.Subproperties.Add(TYPE, "PREF");
+        }
 
-        /// <summary>
-        ///     Builds KEY properties.
-        /// </summary>
-        private void BuildProperties_KEY(
+        switch (im.ItemType)
+        {
+
+          case ItemType.HOME:
+            property.Subproperties.Add(TYPE, ItemType.HOME.ToString());
+            break;
+          case ItemType.WORK:
+            property.Subproperties.Add(TYPE, ItemType.WORK.ToString());
+            break;
+
+          case ItemType.UNSPECIFIED:
+          default:
+            property.Subproperties.Add(TYPE, "OTHER");
+            break;
+        }
+
+        properties.Add(property);
+
+        if (im.ServiceType == IMServiceType.AIM)
+        {
+          var propertyXAim = new vCardProperty("X-AIM", im.Handle);
+          properties.Add(propertyXAim);
+        }
+      }
+
+    }
+
+
+    #region [ BuildProperties_KEY ]
+
+    /// <summary>
+    ///     Builds KEY properties.
+    /// </summary>
+    private void BuildProperties_KEY(
             vCardPropertyCollection properties,
             vCard card)
         {
