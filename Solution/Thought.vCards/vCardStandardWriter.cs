@@ -730,9 +730,6 @@ namespace Thought.vCards
                     if (label.IsWork)
                         property.Subproperties.Add(TYPE, "WORK");
 
-                    // Give a hint to use QUOTED-PRINTABLE.
-
-                    property.Subproperties.Add("ENCODING", "QUOTED-PRINTABLE");
                     properties.Add(property);
 
 
@@ -888,7 +885,6 @@ namespace Thought.vCards
                         property.Subproperties.Add("language", note.Language);
                     }
 
-                    property.Subproperties.Add("ENCODING", "QUOTED-PRINTABLE");
                     properties.Add(property);
 
                 }
