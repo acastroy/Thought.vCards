@@ -888,7 +888,7 @@ namespace Thought.vCards
                     vCardProperty property = new vCardProperty();
 
                     property.Name = "NOTE";
-                    property.Value = note.Text;
+                    property.Value = note.Text.Replace("\r\n", "\n");
 
                     if (!string.IsNullOrEmpty(note.Language))
                     {
