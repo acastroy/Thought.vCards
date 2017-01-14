@@ -368,16 +368,16 @@ namespace Thought.vCards
             // The BDAY property indicates the birthdate
             // of the person.  The output format here is based on
             // Microsoft Outlook, which writes the date as YYYMMDD.
+            // FIXES DateFormat with ToString
 
             if (card.BirthDate.HasValue)
             {
 
                 vCardProperty property =
-                    new vCardProperty("BDAY", card.BirthDate.Value);
+                    new vCardProperty("BDAY", card.BirthDate.Value.ToString("yyyy-MM-dd"));
 
                 properties.Add(property);
             }
-
         }
 
         #endregion
